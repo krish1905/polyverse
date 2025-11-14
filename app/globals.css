@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/OpenSauceOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-background: #1d2b3a;
+  --color-foreground: #ffffff;
+  --color-primary: #56afe2;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #304254;
+  --color-secondary-foreground: #ffffff;
+  --color-muted: #304254;
+  --color-muted-foreground: #999999;
+  --color-accent: #56afe2;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #3d4f61;
+  --color-input: #304254;
+  --color-ring: #56afe2;
+  --radius: 0.5rem;
+}
+
+body {
+  background: #1d2b3a;
+  color: #ffffff;
+  font-family: 'Open Sauce One', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+* {
+  font-family: 'Open Sauce One', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
