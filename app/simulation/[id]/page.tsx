@@ -310,6 +310,8 @@ export default function SimulationPage({
                       handleRunSimulation(selectedMarket, selectedOutcome);
                       setSelectedMarket(null);
                       setSearchQuery("");
+                      setShowTrending(false);
+                      setShowResults(false);
                     }
                   }}
                   className="w-full px-4 py-2 bg-[#56afe2] rounded text-white hover:bg-[#56afe2]/90 transition-colors font-medium text-sm"
