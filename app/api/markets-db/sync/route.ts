@@ -5,10 +5,12 @@ import { createClient } from '@supabase/supabase-js';
 
 const GAMMA_API_BASE = "https://gamma-api.polymarket.com";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY! // Use service key for server-side
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_KEY!
+  );
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -17,6 +19,8 @@ export async function GET(request: Request) {
   console.log('[MarketSync] Sync requested...', force ? '(FORCED)' : '');
   
   try {
+    const supabase = getSupabase();
+    
     // Get the last sync timestamp from DB
     const { data: lastSync } = await supabase
       .from('market_sync_log')

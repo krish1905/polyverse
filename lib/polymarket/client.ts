@@ -111,21 +111,53 @@ export async function getMarkets(params?: {
   const cached = getCached<PolymarketMarket[]>(cacheKey);
   if (cached) return cached;
 
-  // SERVER-SIDE: Try DB first
+  // SERVER-SIDE: Try Supabase directly
   if (typeof window === 'undefined') {
     try {
-      console.log('[getMarkets] Fetching from database...');
-      const dbResponse = await axios.get(`http://localhost:${process.env.PORT || 3001}/api/markets-db/all`, {
-        params: { limit: params?.limit || 50000 },
-        timeout: 30000,
-      });
+      console.log('[getMarkets] Fetching from Supabase...');
+      const { createClient } = await import('@supabase/supabase-js');
       
-      if (dbResponse.data && Array.isArray(dbResponse.data)) {
-        console.log(`[getMarkets] ✓ Got ${dbResponse.data.length} markets from DB (INSTANT!)`);
-        return dbResponse.data;
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_KEY!
+      );
+      
+      const { data, error } = await supabase
+        .from('markets')
+        .select('*')
+        .eq('active', true)
+        .order('volume', { ascending: false })
+        .limit(params?.limit || 50000);
+      
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        console.log(`[getMarkets] ✓ Got ${data.length} markets from Supabase (INSTANT!)`);
+        
+        // Transform from DB format
+        const markets = data.map((m: any) => ({
+          id: m.id,
+          question: m.question,
+          description: m.description,
+          outcomes: Array.isArray(m.outcomes) ? m.outcomes : JSON.parse(m.outcomes || '["Yes","No"]'),
+          outcomePrices: Array.isArray(m.outcome_prices) ? m.outcome_prices : JSON.parse(m.outcome_prices || '[0.5,0.5]'),
+          volume: parseFloat(m.volume) || 0,
+          liquidity: parseFloat(m.liquidity) || 0,
+          endDate: m.end_date,
+          active: m.active,
+          closed: m.closed,
+          category: m.category,
+          tags: Array.isArray(m.tags) ? m.tags : (m.tags ? JSON.parse(m.tags) : []),
+          image: m.image,
+          createdAt: m.created_at,
+          clobTokenIds: m.clob_token_ids,
+          slug: m.slug,
+        }));
+        
+        return markets;
       }
     } catch (dbErr: any) {
-      console.log('[getMarkets] DB fetch failed, falling back to API:', dbErr.message);
+      console.log('[getMarkets] Supabase fetch failed, falling back to API:', dbErr.message);
     }
   }
 
