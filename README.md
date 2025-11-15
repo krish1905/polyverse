@@ -1,6 +1,6 @@
 # Polyverse
 
-Don't just predict the future, simulate it.
+*Don't just predict the future, simulate it.*
 
 A prediction market simulation engine that analyzes how market outcomes ripple through interconnected markets on Polymarket. Built with real-time data, historical correlations, and intelligent relationship detection.
 
