@@ -1,8 +1,8 @@
 # Polyverse
 *Don't just predict the future, simulate it.*
 
-[https://github.com/user-attachments/assets/polyverse.mp4
-](https://github.com/user-attachments/assets/85f239cc-577c-4c25-b96a-b0ef1577b1ed)
+https://github.com/user-attachments/assets/85f239cc-577c-4c25-b96a-b0ef1577b1ed
+
 A prediction market simulation engine that analyzes how market outcomes ripple through interconnected markets on Polymarket. Built with real-time data, historical correlations, and intelligent relationship detection.
 
 ## What It Does
